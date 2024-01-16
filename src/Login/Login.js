@@ -6,7 +6,7 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://blooddonor-api-gateway-iremsu.onrender.com/donor-service/api/login', {
+      const response = await fetch('http://localhost:3001/donor-service/donor-service/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
