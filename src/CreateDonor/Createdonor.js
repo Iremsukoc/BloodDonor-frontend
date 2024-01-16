@@ -23,7 +23,7 @@ const CreateDonor = ({ userId}) => {
 
     const fetchBranchName = async () => {
       try {
-        const response = await axios.post('https://blooddonor-api-gateway-iremsu.onrender.com/donor-service/api/find-branchname', {
+        const response = await axios.post('http://localhost:3001/donor-service/api/find-branchname', {
           userId: userId,
         });
     
