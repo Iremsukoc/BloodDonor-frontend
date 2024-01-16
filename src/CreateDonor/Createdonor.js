@@ -73,7 +73,7 @@ const CreateDonor = ({ userId}) => {
       formData.append('image', image);
   
       try {
-        const response = await axios.post('http://localhost:3001/donor-service/donor-service/api/insert-donor', formData, {
+        const response = await axios.post('http://localhost:3001/donor-service/api/insert-donor', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
