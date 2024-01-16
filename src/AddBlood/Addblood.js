@@ -6,9 +6,6 @@ const Addblood = ({ userId }) => {
   const [branchName, setBranchName] = useState('');
   const [donationDate, setDonationDate] = useState('');
   const [donorName, setDonorName] = useState('');
-  const [donors, setDonors] = useState([]);
-  const [bloodType, setBloodType] = useState('');
-  const [iddonor, setIddonor] = useState('');
   const [unitsOfBlood, setUnitsOfBlood] = useState(0);
 
   const navigate = useNavigate();
@@ -21,31 +18,6 @@ const Addblood = ({ userId }) => {
     }
   }, [userId]);
 
-  useEffect(() => {
-    fetchDonors();
-  }, [donorName]);
-
-  const fetchDonors = async () => {
-    try {
-      const response = await axios.post('http://localhost:3001/donor-service/api/fetch-donors-with-name', {
-        userId,
-        donorName,
-      });
-  
-      const fetchedDonors = response.data.donorInformation || [];
-      console.log('Donors fetched successfully:', fetchedDonors);
-  
-      if (fetchedDonors.length > 0) {
-        const selectedDonor = fetchedDonors[0];
-        setBloodType(selectedDonor.blood_type);
-        console.log(bloodType);
-        setIddonor(selectedDonor.iddonor);
-        setDonationDate(getCurrentDate());
-      }
-    } catch (error) {
-      console.error('Error fetching donors:', error);
-    }
-  };
 
   const fetchBranchName = async () => {
     try {
@@ -68,36 +40,23 @@ const Addblood = ({ userId }) => {
 
   const handleAddBlood = async () => {
     try {
-      console.log('iddonor:', iddonor);
+      console.log('donorName:', donorName);
       const response = await axios.post('http://localhost:3001/donor-service/api/set-blood-units', {
-        iddonor: iddonor,
+        donorName: donorName,
         unitsOfBlood: unitsOfBlood,
       });
 
+
       console.log(response.data);
+
+      setDonationDate(getCurrentDate());
+
     } catch (error) {
       console.error('Error fetching branchName:', error);
     }
   };
 
-  const handleFetchDonor = async () => {
-    await fetchDonors();
-  
-    console.log('Donors state:', donors);
-  
-    if (donors.length > 0) {
-      const selectedDonor = donors[0];
-      setBloodType(selectedDonor.blood_type);
-      setIddonor(selectedDonor.iddonor);
-      setDonationDate(getCurrentDate());
-    }
-  };
-  
 
-  const handleUnitsChange = (e) => {
-    const unitsValue = parseInt(e.target.value, 10) || 0;
-    setUnitsOfBlood(unitsValue);
-  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -109,11 +68,6 @@ const Addblood = ({ userId }) => {
         <label id="donor-name-label">Donor Name</label>
         <input
           id="donor-name-input"  value={donorName} onChange={(e) => setDonorName(e.target.value)}/>
-          <button onClick={handleFetchDonor}>This User Selected</button>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'row', marginTop: '30px' }}>
-        <label id="blood-type-label">Blood Type: {bloodType}</label>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '30px' }}>
@@ -122,7 +76,7 @@ const Addblood = ({ userId }) => {
 
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: '30px' }}>
         <label id="units-label">Units</label>
-        <input id="units-input" max={10} min={0} type="number" style={{ marginLeft: '20px' }} onChange={handleUnitsChange} />
+        <input id="units-input" max={10} min={0} type="number" style={{ marginLeft: '20px' }} onChange={(e) => setUnitsOfBlood(e.target.value)} />
       </div>
 
       <button id='add-blood' onClick={handleAddBlood}  style={{width:"30%" , marginLeft:"50px", marginTop:"50px"}}>ADD</button>

@@ -23,7 +23,7 @@ const CreateDonor = ({ userId}) => {
 
     const fetchBranchName = async () => {
       try {
-        const response = await axios.post('http://localhost:1010/api/find-branchname', {
+        const response = await axios.post('http://localhost:3001/donor-service/api/find-branchname', {
           userId: userId,
         });
     
